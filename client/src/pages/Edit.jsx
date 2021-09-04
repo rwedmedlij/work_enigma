@@ -6,13 +6,12 @@ import { useHistory } from "react-router-dom";
 import "./Edit.css";
 
 function Edit() {
+  let history = useHistory();
   const location = useLocation();
   const state = useSelector((state) => state.users.users);
-  const [user, setUser] = useState({});
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  let history = useHistory();
   const [idtoEdit, setidtoEdit] = useState("");
   const [myChoice_Edit_Add, setmyChoice_Edit_Add] = useState(location.state);
   useEffect(() => {
