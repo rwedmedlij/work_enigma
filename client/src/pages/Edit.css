@@ -1,0 +1,24 @@
+.btn__width {
+        width: 200px;
+}
+.right__btn{
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+.shoping__data{
+    padding: 10px;
+    background-color: white;
+    width: 200px;
+}
+.btn__allwidth{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.edit_delete{
+    display: flex;
+    width: 150px;
+    justify-content: space-between;
+}

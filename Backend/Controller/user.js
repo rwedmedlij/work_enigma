@@ -14,27 +14,20 @@ var connecty = mysql.createConnection({
 connecty.connect(function (err) {
   if (err) throw err;
   console.log(`\x1b[36mServer Connected to database  🔥`);
-  
   var sqlCreateTable ="CREATE TABLE IF NOT EXISTS USERS (id VARCHAR(255) PRIMARY KEY, name VARCHAR(255) NOT NULL, email NVARCHAR(255) NOT NULL)";
   connecty.query(sqlCreateTable);
-  console.log("created table")
 });
 
 exports.get_Users =  (req, res) => {
-
   connecty.query("SELECT * FROM USERS", function (err, result, fields) {
     if (err) throw err;
-    if(result.length > 0) {
-      console.log("Get User table");
+    if(result.length > 0) 
       res.send({ users:result , message : "got find the users" })
-    }
-    
   });
 };
 
 exports.edit_User = async (req, res) => {
   const {idtoEdit ,name , email } = req.body;
-  console.log(idtoEdit +" "+name)
   var sql = "UPDATE USERS SET name = '"+name+"' ,  email ='"+email+"'  WHERE id = '"+idtoEdit+"'";
   connecty.query(sql, function (err, result, fields) {
     if (err) throw err;
@@ -47,9 +40,7 @@ exports.add_User = async (req, res) => {
     var sql = "INSERT INTO USERS (id,name,email) VALUES ('"+id+"' , '"+name+"' , '"+email+"' )";
   connecty.query(sql, function (err, result, fields) {
     if (err) throw err;
-      console.log("INSERT User sececfully");
       res.send( {message : "insert good" })
-
   });
 };
 
@@ -57,10 +48,7 @@ exports.delete_User = async (req, res) => {
   const {id} = req.body;
   connecty.query("DELETE FROM USERS WHERE id = '"+id+"'", function (err, result, fields) {
     if (err) throw err;
-      console.log("delete User sececfully");
-
          res.send( {message : "insert good" })
-
   });
 };
 
