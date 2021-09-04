@@ -8,8 +8,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Option from "../components/Option";
-import { fetchUsers } from "../redux";
 import { useDispatch, useSelector } from "react-redux";
+import { addUser ,deleteUser} from "../redux/action";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -29,21 +29,32 @@ const rows = [
 ];
 
 function TableUsers() {
+  useEffect(()=>{
+    Get_Users_From_DataBase();
+  },[])
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [users, setUsers] = useState([]);
-  function Get_Users_From_DataBase() {
-    fetch(`http://localhost:3002/user/get_Users`)
-    .then((r) => r.json())
-    .then((data) => {
-      dispatch(
-        fetchCompanies(data.firstPage.fundName, data.firstPage.chanel)
-      );
-      setUsers(data.users);
-    });
+
+  const state2 = useSelector((state) => state.users.users);
+  async function Get_Users_From_DataBase() {
+    state2.map(user => {
+      dispatch(deleteUser(user.id));
+    })
+    await fetch(`http://localhost:3002/user/get_Users`)
+      .then((r) => r.json())
+      .then((data) => {
+        data.users.map(user=>{
+          dispatch(addUser(user));
+        })
+        
+        setUsers(data.users);
+      });
   }
-  window.onload = function() {
-    Get_Users_From_DataBase();
-  };
+
+  // window.onload = function () {
+  //   Get_Users_From_DataBase();
+  // };
 
   return (
     <div>
@@ -58,7 +69,7 @@ function TableUsers() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((row,index) => (
+            {users.map((row, index) => (
               <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
                   {row.id}
@@ -66,7 +77,7 @@ function TableUsers() {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>
-                  <Option user={row}></Option>
+                  <Option user={row} users={users} setUsers={setUsers}></Option>
                 </TableCell>
               </TableRow>
             ))}

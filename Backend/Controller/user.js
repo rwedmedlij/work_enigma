@@ -28,23 +28,39 @@ exports.get_Users =  (req, res) => {
       console.log("Get User table");
       res.send({ users:result , message : "got find the users" })
     }
+    
   });
 };
 
 exports.edit_User = async (req, res) => {
-  const {oldid , update_id , update_name , update_email } = req.body;
-  connecty.query("UPDATE USERS SET id = "+update_id+" name = "+update_name+" email ="+update_email+"  WHERE id = "+oldid+"", function (err, result, fields) {
+  const {idtoEdit ,name , email } = req.body;
+  console.log(idtoEdit +" "+name)
+  var sql = "UPDATE USERS SET name = '"+name+"' ,  email ='"+email+"'  WHERE id = '"+idtoEdit+"'";
+  connecty.query(sql, function (err, result, fields) {
     if (err) throw err;
-      console.log("update User "+result);
-      res.send({ users:result , message : "we goot update" })
+      res.send({ message : "we goot update" })
   });
 };
 
 exports.add_User = async (req, res) => {
-  console.log("now add Users");
+  const {id,name,email} = req.body;
+    var sql = "INSERT INTO USERS (id,name,email) VALUES ('"+id+"' , '"+name+"' , '"+email+"' )";
+  connecty.query(sql, function (err, result, fields) {
+    if (err) throw err;
+      console.log("INSERT User sececfully");
+      res.send( {message : "insert good" })
+
+  });
 };
 
 exports.delete_User = async (req, res) => {
-  console.log("now add Users");
+  const {id} = req.body;
+  connecty.query("DELETE FROM USERS WHERE id = '"+id+"'", function (err, result, fields) {
+    if (err) throw err;
+      console.log("delete User sececfully");
+
+         res.send( {message : "insert good" })
+
+  });
 };
 
